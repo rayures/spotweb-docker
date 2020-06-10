@@ -160,9 +160,6 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     crontab /etc/crontab
 fi
 
-# Run database update
-/usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
-
 # Clean up apache pid (if there is one)
 rm -rf /run/apache2/apache2.pid
 
