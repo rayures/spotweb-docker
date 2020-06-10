@@ -107,6 +107,7 @@ if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$D
 fi
 
 if [[ -n "$DB_PORT" ]]; then
+    echo "adding port settings in database configuration"
     echo "\$dbsettings['port'] = '$DB_PORT';"  >> ${WebDir}/dbsettings.inc.php
 fi
 
@@ -139,9 +140,11 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     ln -sf /proc/$$/fd/1 /var/log/stdout
     service cron start
 	if [[ -n "$SPOTWEB_CRON_RETRIEVE" ]]; then
+        echo "setting cron retrieve settings"
         echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php >/var/log/stdout 2>&1" > /etc/crontab
 	fi
 	if [[ -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
+        echo "setting cron cache check settings"
         echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
 	fi
     crontab /etc/crontab
