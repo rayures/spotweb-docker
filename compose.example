@@ -8,7 +8,7 @@ services:
     environment:
       - TZ: Europe/Amsterdam
       - VERSION: master
-      - DB_ENGINE: PSQL
+      - DB_TYPE: PSQL
       - BD_HOST: spotweb-docker-db
       - DB_PORT: 5432
       - DB_NAME: spotweb
