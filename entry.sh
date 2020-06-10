@@ -153,7 +153,6 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
         echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
 	fi
 #    crontab /etc/crontab
-crond -f -l 8
 fi
 
 # Clean up apache pid (if there is one)
@@ -169,5 +168,10 @@ rm -rf /var/cache/apk/* && \
 
 echo "Deployment done!"
 exec "$@"
+echo "1"
 
 tail -F /var/log/apache2/* /dev/stdout /dev/stderr
+echo "2"
+
+crond -f -l 8
+echo "3"
