@@ -153,6 +153,7 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
         echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
 	fi
 #    crontab /etc/crontab
+crond -f -l 8
 fi
 
 # Clean up apache pid (if there is one)
