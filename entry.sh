@@ -95,7 +95,27 @@ case ${SQL} in
   ;;
 esac
 
+if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$DB_PASS" ]]; then
+    echo "Creating database configuration"
+    echo "<?php" > /config/dbsettings.inc.php
+    echo "\$dbsettings['engine'] = '$DB_TYPE';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['host'] = '$DB_HOST';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['dbname'] = '$DB_NAME';"  >> /config/dbsettings.inc.php
+    echo "\$dbsettings['user'] = '$DB_USER';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['pass'] = '$DB_PASS';"  >> /config/dbsettings.inc.php
+fi
 
+if [[ -n "$DB_PORT" ]]; then
+    echo "\$dbsettings['port'] = '$DB_PORT';"  >> /config/dbsettings.inc.php
+fi
+
+if [ -f /config/dbsettings.inc.php ]; then
+	chown www-data:www-data /config/dbsettings.inc.php
+	rm /var/www/spotweb/dbsettings.inc.php
+	ln -s /config/dbsettings.inc.php /var/www/spotweb/dbsettings.inc.php
+else
+	echo -e "\nWARNING: You have no database configuration file, either create /config/dbsettings.inc.php or restart this container with the correct environment variables to auto generate the config.\n"
+fi
 
 if [[ ! -z ${UUID} ]]
 then
