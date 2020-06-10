@@ -99,11 +99,11 @@ if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$D
     echo "Creating database configuration"
     touch ${WebDir}/dbsettings.inc.php && chown www-data:www-data ${WebDir}/dbsettings.inc.php
     echo "<?php" > ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['engine'] = '$DB_TYPE';" >> /config/dbsettings.inc.php
-    echo "\$dbsettings['host'] = '$DB_HOST';" >> /config/dbsettings.inc.php
-    echo "\$dbsettings['dbname'] = '$DB_NAME';"  >> /config/dbsettings.inc.php
-    echo "\$dbsettings['user'] = '$DB_USER';" >> /config/dbsettings.inc.php
-    echo "\$dbsettings['pass'] = '$DB_PASS';"  >> /config/dbsettings.inc.php
+    echo "\$dbsettings['engine'] = '$DB_TYPE';" >> ${WebDir}/dbsettings.inc.php
+    echo "\$dbsettings['host'] = '$DB_HOST';" >> ${WebDir}/dbsettings.inc.php
+    echo "\$dbsettings['dbname'] = '$DB_NAME';"  >> ${WebDir}/dbsettings.inc.php
+    echo "\$dbsettings['user'] = '$DB_USER';" >> ${WebDir}/dbsettings.inc.php
+    echo "\$dbsettings['pass'] = '$DB_PASS';"  >> ${WebDir}/dbsettings.inc.php
 fi
 
 if [[ -n "$DB_PORT" ]]; then
@@ -140,3 +140,5 @@ rm -rf /var/cache/apk/* && \
 
 echo "Deployment done!"
 exec "$@"
+
+tail -F /var/log/apache2/* /dev/stdout /dev/stderr
