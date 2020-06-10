@@ -9,4 +9,4 @@ RUN apk update && \
     chown apache: /run/apache2
 EXPOSE 80 443
 ENTRYPOINT ["/entry.sh"]
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND", "-f", "/etc/apache2/httpd.conf", "crond -f -l 8"]
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND", "-f", "/etc/apache2/httpd.conf"]
