@@ -1,1 +1,26 @@
-todo
+services:
+  spotweb:
+    image: rayures/spotweb-docker:latest
+    container_name: spotweb-docker-app
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      TZ: Europe/Amsterdam
+      SQL: PSQL
+      VERSION: master
+      DBUSER: XXXX
+      DBPASS: XXXX
+      DBDB: spotweb
+      
+   Postgres:
+    container_name: spotweb-docker-db
+    image: postgres:13-alpine
+    restart: always
+    volumes:
+      - spotweb-docker/db:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - POSTGRES_USER: XXXX
+      - POSTGRES_PASSWORD: XXXX
+      - POSTGRES_DB: spotweb
