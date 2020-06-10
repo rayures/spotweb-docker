@@ -6,16 +6,18 @@ services:
     ports:
       - "80:80"
     environment:
-      TZ: Europe/Amsterdam
-      SQL: PSQL
-      VERSION: master
-      DBUSER: XXXX
-      DBPASS: XXXX
-      DBDB: spotweb
+      - TZ: Europe/Amsterdam
+      - VERSION: master
+      - DB_ENGINE: PSQL
+      - BD_HOST: spotweb-docker-db
+      - DB_PORT: 5432
+      - DB_NAME: spotweb
+      - DB_USER: XXXX
+      - DB_PASS: XXXX
       
    Postgres:
     container_name: spotweb-docker-db
-    image: postgres:13-alpine
+    image: postgres: alpine
     restart: always
     volumes:
       - spotweb-docker/db:/var/lib/postgresql/data
