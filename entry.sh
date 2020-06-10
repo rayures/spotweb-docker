@@ -81,11 +81,11 @@ case ${DB_TYPE} in
     apk add php7-pdo_sqlite
   ;;
 
-  psql)
+  pdo_pgsql)
     apk add php7-pgsql php7-pdo_pgsql
   ;;
 
-  mysql)
+  pdo_mysql)
     apk add php7-mysqlnd php7-pdo_mysql
   ;;
 
