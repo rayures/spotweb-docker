@@ -95,11 +95,6 @@ case ${DB_TYPE} in
   ;;
 esac
 
-if [ ! -f /config/ownsettings.php ] && [ -f /var/www/spotweb/ownsettings.php ]; then
-  mkdir /config/
-  cp /var/www/spotweb/ownsettings.php /config/ownsettings.php
-fi
-
 mkdir /config/
 touch /config/ownsettings.php #&& chown www-data:www-data /config/ownsettings.php
 rm -f /var/www/spotweb/ownsettings.php
@@ -167,9 +162,9 @@ chown -R apache: ${WebDir}
 rm -rf /var/cache/apk/* && \
 
 # Run database update (2 times)
-/usr/bin/php /var/www/spotweb/bin/upgrade-db.php # >/dev/null 2>&1
-/usr/bin/php /var/www/spotweb/bin/upgrade-db.php
-
+echo "update DB"
+	/usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
+	/usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
 
 echo "Deployment done!"
 exec "$@"
