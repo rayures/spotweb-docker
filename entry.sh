@@ -97,7 +97,7 @@ esac
 
 if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$DB_PASS" ]]; then
     echo "Creating database configuration"
-    touch ${WebDir}/dbsettings.inc.php && chown www-data:www-data ${WebDir}/dbsettings.inc.php
+    touch ${WebDir}/dbsettings.inc.php # && chown www-data:www-data ${WebDir}/dbsettings.inc.php
     echo "<?php" > ${WebDir}/dbsettings.inc.php
     echo "\$dbsettings['engine'] = '$DB_TYPE';" >> ${WebDir}/dbsettings.inc.php
     echo "\$dbsettings['host'] = '$DB_HOST';" >> ${WebDir}/dbsettings.inc.php
