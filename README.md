@@ -12,5 +12,7 @@ Environment variables:
    - DB_NAME={spotweb}
    - DB_USER={username}
    - DB_PASS={password}
+   - SPOTWEB_CRON_RETRIEVE={0 * * * * #every hour}
+   - SPOTWEB_CRON_CACHE_CHECK={* 4 * * * #every day at 04.00}
 
 Docker-hub image auto updates every month.
