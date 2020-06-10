@@ -95,10 +95,10 @@ case ${DB_TYPE} in
   ;;
 esac
 
-#mkdir /config/
-#touch /config/ownsettings.php #&& chown www-data:www-data /config/ownsettings.php
-#rm -f /var/www/spotweb/ownsettings.php
-#ln -s /config/ownsettings.php /var/www/spotweb/ownsettings.php
+mkdir /config/
+touch /config/ownsettings.php #&& chown www-data:www-data /config/ownsettings.php
+rm -f /var/www/spotweb/ownsettings.php
+ln -s /config/ownsettings.php /var/www/spotweb/ownsettings.php
 
 if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$DB_PASS" ]]; then
     echo "Creating database configuration"
