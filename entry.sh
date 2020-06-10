@@ -95,24 +95,32 @@ case ${DB_TYPE} in
   ;;
 esac
 
+if [ ! -f /config/ownsettings.php ] && [ -f /var/www/spotweb/ownsettings.php ]; then
+  cp /var/www/spotweb/ownsettings.php /config/ownsettings.php
+fi
+
+touch /config/ownsettings.php #&& chown www-data:www-data /config/ownsettings.php
+rm -f /var/www/spotweb/ownsettings.php
+ln -s /config/ownsettings.php /var/www/spotweb/ownsettings.php
+
 if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$DB_PASS" ]]; then
     echo "Creating database configuration"
-    touch ${WebDir}/dbsettings.inc.php # && chown www-data:www-data ${WebDir}/dbsettings.inc.php
-    echo "<?php" > ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['engine'] = '$DB_TYPE';" >> ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['host'] = '$DB_HOST';" >> ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['dbname'] = '$DB_NAME';"  >> ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['user'] = '$DB_USER';" >> ${WebDir}/dbsettings.inc.php
-    echo "\$dbsettings['pass'] = '$DB_PASS';"  >> ${WebDir}/dbsettings.inc.php
+    #touch ${WebDir}/dbsettings.inc.php # && chown www-data:www-data ${WebDir}/dbsettings.inc.php
+    echo "<?php" > /config/dbsettings.inc.php
+    echo "\$dbsettings['engine'] = '$DB_TYPE';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['host'] = '$DB_HOST';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['dbname'] = '$DB_NAME';"  >> /config/dbsettings.inc.php
+    echo "\$dbsettings['user'] = '$DB_USER';" >> /config/dbsettings.inc.php
+    echo "\$dbsettings['pass'] = '$DB_PASS';"  >> /config/dbsettings.inc.php
 fi
 
 if [[ -n "$DB_PORT" ]]; then
     echo "adding port settings in database configuration"
-    echo "\$dbsettings['port'] = '$DB_PORT';"  >> ${WebDir}/dbsettings.inc.php
+    echo "\$dbsettings['port'] = '$DB_PORT';"  >> /config/dbsettings.inc.php
 fi
 
 if [ -f /config/dbsettings.inc.php ]; then
-	chown www-data:www-data /config/dbsettings.inc.php
+	#chown www-data:www-data /config/dbsettings.inc.php
 	rm /var/www/spotweb/dbsettings.inc.php
 	ln -s /config/dbsettings.inc.php /var/www/spotweb/dbsettings.inc.php
 else
