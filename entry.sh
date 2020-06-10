@@ -135,6 +135,24 @@ then
   find / -group ${OldGID} -exec chgrp -h apache {} \; &> /dev/null
 fi
 
+if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
+    ln -sf /proc/$$/fd/1 /var/log/stdout
+    service cron start
+	if [[ -n "$SPOTWEB_CRON_RETRIEVE" ]]; then
+        echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php >/var/log/stdout 2>&1" > /etc/crontab
+	fi
+	if [[ -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
+        echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
+	fi
+    crontab /etc/crontab
+fi
+
+# Run database update
+/usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
+
+# Clean up apache pid (if there is one)
+rm -rf /run/apache2/apache2.pid
+
 chown -R apache: ${WebDir}
 rm -rf /var/cache/apk/* && \
 
