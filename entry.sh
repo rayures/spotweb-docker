@@ -100,6 +100,7 @@ if [ ! -f /config/ownsettings.php ] && [ -f /var/www/spotweb/ownsettings.php ]; 
   cp /var/www/spotweb/ownsettings.php /config/ownsettings.php
 fi
 
+mkdir /config/
 touch /config/ownsettings.php #&& chown www-data:www-data /config/ownsettings.php
 rm -f /var/www/spotweb/ownsettings.php
 ln -s /config/ownsettings.php /var/www/spotweb/ownsettings.php
