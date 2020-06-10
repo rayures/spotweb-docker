@@ -166,6 +166,11 @@ rm -rf /run/apache2/apache2.pid
 chown -R apache: ${WebDir}
 rm -rf /var/cache/apk/* && \
 
+# Run database update (2 times)
+/usr/bin/php /var/www/spotweb/bin/upgrade-db.php # >/dev/null 2>&1
+/usr/bin/php /var/www/spotweb/bin/upgrade-db.php
+
+
 echo "Deployment done!"
 exec "$@"
 
