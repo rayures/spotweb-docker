@@ -75,8 +75,8 @@ sed -i "s/#ServerName www.example.com/ServerName $(hostname)/g" /etc/apache2/htt
 echo "date.timezone = ${TZ}" >> /etc/php7/php.ini
 
 echo
-echo "Installing ${SQL} support:"
-case ${SQL} in
+echo "Installing ${DB_TYPE} support:"
+case ${DB_TYPE} in
   sqlite)
     apk add php7-pdo_sqlite
   ;;
@@ -91,7 +91,7 @@ case ${SQL} in
 
   *)
     echo
-    echo "Option SQL=${SQL} invalid, use sqlite, psql or mysql!"
+    echo "Option SQL=${DB_TYPE} invalid, use sqlite, psql or mysql!"
   ;;
 esac
 
