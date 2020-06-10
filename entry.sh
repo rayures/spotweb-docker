@@ -96,6 +96,7 @@ case ${DB_TYPE} in
 esac
 
 if [ ! -f /config/ownsettings.php ] && [ -f /var/www/spotweb/ownsettings.php ]; then
+  mkdir /config/
   cp /var/www/spotweb/ownsettings.php /config/ownsettings.php
 fi
 
