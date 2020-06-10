@@ -6,7 +6,7 @@ Alpine with a fresh git-pull from spotweb source on container start.
 Environment variables:
    - TZ=Europe/Amsterdam
    - VERSION={master|develop}
-   - DB_TYPE={psql|mysql|sqlite}
+   - DB_TYPE={pdo_pgsql|pdo_mysql|sqlite}
    - BD_HOST={name}
    - DB_PORT={port}
    - DB_NAME={spotweb}
