@@ -5,15 +5,19 @@ services:
     restart: always
     ports:
       - "80:80"
+    volumes:
+    - spotweb-docker/app/:/config
     environment:
       - TZ: Europe/Amsterdam
       - VERSION: master
-      - DB_TYPE: PSQL
+      - DB_TYPE: pdo_psqlL
       - BD_HOST: spotweb-docker-db
       - DB_PORT: 5432
       - DB_NAME: spotweb
       - DB_USER: XXXX
       - DB_PASS: XXXX
+      - SPOTWEB_CRON_RETRIEVE=0 * * * * #every hour
+      - SPOTWEB_CRON_CACHE_CHECK=* 4 * * * #every day at 04.00
       
    Postgres:
     container_name: spotweb-docker-db
