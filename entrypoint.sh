@@ -38,7 +38,7 @@ if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$D
 fi
 
 if [[ -n "$DB_PORT" ]]; then
-    echo -e "\nFOUND DB port settings: adding DB port to database configuration"
+    echo -e "\nFOUND DB port settins: adding DB port to database configuration"
     echo "\$dbsettings['port'] = '$DB_PORT';"  >> /config/dbsettings.inc.php
 fi
 
@@ -63,10 +63,11 @@ if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     ln -sf /proc/$$/fd/1 /var/log/stdout
     service cron start
 	if [[ -n "$SPOTWEB_CRON_RETRIEVE" ]]; then
-        echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php >/var/log/stdout 2>&1" > /etc/crontab
+    # >> /proc/1/fd/1 forces log to redirect to PID1. if proces is not PID1 docker will not see te log
+        echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php --force >> /proc/1/fd/1" > /etc/crontab
 	fi
 	if [[ -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
-        echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
+        echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >> /proc/1/fd/1" >> /etc/crontab
 	fi
     crontab /etc/crontab
 fi
@@ -96,4 +97,4 @@ if [[ -n $rt ]]; then
 fi
 
 echo -e "\ndone" 
-tail -F /var/log/apache2/error.log /dev/stdout /dev/stderr
+tail -f /var/log/apache2/error.log /dev/stdout /dev/stderr
