@@ -55,6 +55,9 @@ TZ=${TZ:-"Europe/Amsterdam"}
 echo -e "\nSetting (PHP) time zone to ${TZ}\n"
 sed -i "s#^;date.timezone =.*#date.timezone = ${TZ}#g"  /etc/php/7.*/*/php.ini
 
+echo -e "\nSetting PHP Memory limit"
+sed -i "s#^;memory_limit =.*#memory_limit = 256M#g"  /etc/php/7.*/*/php.ini
+
 if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     echo "setting cron"
     ln -sf /proc/$$/fd/1 /var/log/stdout
