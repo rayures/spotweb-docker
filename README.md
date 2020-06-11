@@ -44,6 +44,9 @@ docker run --restart=always -d -p 80:80 \
 Please NOTE that the volume is optional. Only necessary when you have special configuration settings. The database port is also optional. If omitted it will use the standard port for MySQL / PostgreSQL
 You should now be able to reach the spotweb interface on port 80.
 
+##### Spotweb github branch
+you can define the spotweb branch via the VERSION environment variable. If not defined it defaults to MASTER.
+
 ## Automatic retrieval of new spots
 
 To enable automatic retrieval, you can use the environment variables 
@@ -56,5 +59,5 @@ To enable automatic retrieval, you can use the environment variables
 Docker-hub image will be auto updated every month.
 
 special thanks to:
-- https://github.com/jgeusebroek/docker-spotweb
+- https://hub.docker.com/r/jgeusebroek/spotweb
 - https://hub.docker.com/r/jerheij/spotweb
