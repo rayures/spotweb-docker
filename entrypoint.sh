@@ -38,7 +38,7 @@ if [[ -n "$DB_TYPE" && -n "$DB_HOST" && -n "$DB_NAME" && -n "$DB_USER" && -n "$D
 fi
 
 if [[ -n "$DB_PORT" ]]; then
-    echo -e "\nFOUND DB port settins: adding DB port to database configuration"
+    echo -e "\nFOUND DB port settings: adding DB port to database configuration"
     echo "\$dbsettings['port'] = '$DB_PORT';"  >> /config/dbsettings.inc.php
 fi
 
@@ -56,7 +56,7 @@ echo -e "\nSetting (PHP) time zone to ${TZ}\n"
 sed -i "s#^;date.timezone =.*#date.timezone = ${TZ}#g"  /etc/php/7.*/*/php.ini
 
 echo -e "\nSetting PHP Memory limit"
-sed -i "s#^;memory_limit =.*#memory_limit = 256M#g"  /etc/php/7.*/*/php.ini
+sed -i "s/.*memory_limit.*/memory_limit = 256M/" /etc/php/7.*/*/php.ini
 
 if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     echo "setting cron"
