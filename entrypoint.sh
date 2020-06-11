@@ -93,4 +93,4 @@ if [[ -n $rt ]]; then
 fi
 
 echo -e "\ndone" 
-tail -F /var/log/apache2/* /dev/stdout /dev/stderr
+tail -F /var/log/apache2/error.log /dev/stdout /dev/stderr
