@@ -18,7 +18,7 @@ fi
 
 if [ ! -f /config/ownsettings.php ] && [ -f /var/www/spotweb/ownsettings.php ]; then
   cp /var/www/spotweb/ownsettings.php /config/ownsettings.php
-  echo -e "\nCreating settings files"
+  echo -e "\ncreating settings files"
 fi
 
 touch /config/ownsettings.php && chown www-data:www-data /config/ownsettings.php
@@ -52,31 +52,31 @@ else
 fi
 
 TZ=${TZ:-"Europe/Amsterdam"}
-echo -e "\nSetting (PHP) time zone to ${TZ}\n"
+echo -e "\nsetting (PHP) time zone to ${TZ}\n"
 sed -i "s#^;date.timezone =.*#date.timezone = ${TZ}#g"  /etc/php/7.*/*/php.ini
 
-echo -e "\nSetting PHP Memory limit"
+echo -e "\nsetting PHP Memory limit"
 sed -i "s/.*memory_limit.*/memory_limit = 256M/" /etc/php/7.*/*/php.ini
 
 if [[ -n "$SPOTWEB_CRON_RETRIEVE" || -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
     echo "setting cron"
-    ln -sf /proc/$$/fd/1 /var/log/stdout
+    # >> /proc/1/fd/1 forces log to redirect to PID1. if proces is not PID1 docker will not see te log
+    ln -sf /proc/$$/fd/1 /var/log/stdout 
     service cron start
 	if [[ -n "$SPOTWEB_CRON_RETRIEVE" ]]; then
-    # >> /proc/1/fd/1 forces log to redirect to PID1. if proces is not PID1 docker will not see te log
-        echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php --force >> /proc/1/fd/1" > /etc/crontab
+        echo "$SPOTWEB_CRON_RETRIEVE su -l www-data -s /usr/bin/php /var/www/spotweb/retrieve.php >/var/log/stdout 2>&1" > /etc/crontab
 	fi
 	if [[ -n "$SPOTWEB_CRON_CACHE_CHECK" ]]; then
-        echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >> /proc/1/fd/1" >> /etc/crontab
+        echo "$SPOTWEB_CRON_CACHE_CHECK su -l www-data -s /usr/bin/php /var/www/spotweb/bin/check-cache.php >/var/log/stdout 2>&1" >> /etc/crontab
 	fi
     crontab /etc/crontab
 fi
 
 # move custom htacces to spotweb folder # Add caching and compression config to .htaccess
-echo -e "\nImport custom .htaccess" 
+echo -e "\nimport custom .htaccess" 
 cat /001-htaccess.conf >> /var/www/spotweb/.htaccess
     
-# Run database update
+# Run database update (sometimes one update run is not enough)
 echo -e "\nrun DB update"
 /usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
 /usr/bin/php /var/www/spotweb/bin/upgrade-db.php >/dev/null 2>&1
@@ -84,6 +84,9 @@ echo -e "\nrun DB update"
 # Clean up apache pid (if there is one)
 echo -e "\nclean apache pid" 
 rm -rf /run/apache2/apache2.pid
+
+# Symbolic link apache error log to stdout
+ln -sf /var/log/apache2/error.log /var/log/stderr
 
 # Enabling PHP mod rewrite, expires and deflate (they may be on already by default)
 unset rt
@@ -96,5 +99,5 @@ if [[ -n $rt ]]; then
     /etc/init.d/apache2 restart
 fi
 
-echo -e "\ndone" 
-tail -f /var/log/apache2/error.log /dev/stdout /dev/stderr
+echo -e "\nstartup done" 
+tail -f /dev/stdout /dev/stderr /var/log/stdout /var/log/stderr
